@@ -27,6 +27,7 @@ app.get('/discourse_sso', (req, res) => {
   const data = {
     nonce: query.get('nonce'),
     email: "Ahmedgagan3@gmail.com",
+    // pass a unique id for each user
     external_id: 24
     // other params from https://meta.discourse.org/t/discourseconnect-official-single-sign-on-for-discourse-sso/13045
   }
@@ -37,7 +38,8 @@ app.get('/discourse_sso', (req, res) => {
 
   const responsePayload = base64Encode(responseQueryString);
   const hmacSHA256Payload = hmacSHA256(responsePayload, SECRET);
-  const responseSigHex = hmacSHA256Payload.toString(hex)
+  // toString converts to hex format by default
+  const responseSigHex = hmacSHA256Payload.toString()
 
   const redirectUrl = `${discourseUrl}?sso=${responsePayload}&sig=${responseSigHex}`;
 
